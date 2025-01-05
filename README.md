@@ -2,9 +2,10 @@
 
 ### Desafio 03 - Curso One-Alura
 Programa desenvolvido durante o curso One da plataforma Alura, utilizando uma API de livros.<br>
+
 link da API:<br>
 https://gutendex.com <br>
-<br>
+
 documentação:<br>
 https://github.com/garethbjohnson/gutendex
 
@@ -23,7 +24,7 @@ Apresentar um sistema de menus no terminal para interação com o usuário, com 
 <strong>Nota:</strong> O idioma é representado como um enum e armazenado como uma sigla no banco de dados.<br>
 <br>
 ❗ Cuidado: Algumas exceções não foram tratadas, como a possibilidade de o usuário fornecer dados incorretos ou fora do formato esperado. Isso pode causar erros durante a execução do programa.
-Recomenda-se que o usuário preencha os dados corretamente para garantir o funcionamento adequado.
+Recomenda-se que o usuário preencha os dados corretamente para garantir o funcionamento adequado.<br>
 
 <br>
 
@@ -64,7 +65,62 @@ Recomenda-se que o usuário preencha os dados corretamente para garantir o funci
 
 <br>
 
+## 📚 Tecnologias utilizadas
 
+<div>
+  <table>
+    <tr>
+      <th>
+        Linguagem
+      </th>
+      <td>
+        <img alt="Static Badge" src="https://img.shields.io/badge/java-yellow?style=for-the-badge">
+        <img alt="Static Badge" src="https://img.shields.io/badge/sql%20-%20cyan?style=for-the-badge">
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Banco de Dados
+      </th>
+      <td>
+        <img alt="Static Badge" src="https://img.shields.io/badge/postgresql%20-%20blue?style=for-the-badge">
+      </td>
+    <tr>
+      <th>
+         Biblioteca
+      </th>
+       <td>
+         <img alt="Static Badge" src="https://img.shields.io/badge/gson%20-%20black?style=for-the-badge">
+         <img alt="Static Badge" src="https://img.shields.io/badge/spring%20data%20jpa%20-%20black?style=for-the-badge">
+         <img alt="Static Badge" src="https://img.shields.io/badge/postgresql%20driver%20-%20black?style=for-the-badge">
+      </td>
+    </tr>
+    <tr>
+      <th>
+        IDE
+      </th>
+      <td>
+        <img alt="Static Badge" src="https://img.shields.io/badge/intelij-black?style=for-the-badge">
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Framework
+      </th>
+      <td>
+        <img alt="Static Badge" src="https://img.shields.io/badge/spring%20boot%20-%20green?style=for-the-badge">
+      </td>
+    </tr>
+  </table>
+</div>
+
+<br>
+
+## Autor
+| [<img loading="lazy" src="https://avatars.githubusercontent.com/u/168394448?v=4" width=115><br><sub>Lorenzo Rover</sub>](https://github.com/lorenzorover) |
+| :---: |
+<br>
+Desenvolvido em janeiro de 2025.
 
 
 
