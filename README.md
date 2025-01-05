@@ -12,12 +12,13 @@ https://github.com/garethbjohnson/gutendex
 
 ## Funcionalidades
 
-O sistema permite ao usuário:
+Apresentar um sistema de menus no terminal para interação com o usuário, com as seguintes opções:
+  - Permitir cadastrar livros no banco de dados com informações como título, idioma (definido por um enum), autor e número de downloads diretamente pela interface de linha de comando.
+  - Listar livros, exibindo os autores relacionados.
+  - Consultar autores vivos com base em critérios escolhidos.
+  - Listar ou mostrar a contagem de livros pelo idioma escolhido.
+  - Gerenciar dados em um banco de dados, com suporte a relacionamentos entre entidades (livros e autores), exibindo resultados no terminal.
 
-- Cadastrar livros com informações como título, idioma (definido por um enum) e autor.
-- Associar um livro a um único autor e idioma, conforme os requisitos do projeto.
-- Consultar livros e autores por critérios, como ano de nascimento e ano de falecimento do autor.
-- Gerenciar dados em um banco de dados utilizando relacionamentos entre entidades (livros e autores).
 <br>
 <strong>Nota:</strong> O idioma é representado como um enum e armazenado como uma sigla no banco de dados.<br>
 <br>
@@ -62,6 +63,8 @@ Recomenda-se que o usuário preencha os dados corretamente para garantir o funci
 </div> 
 
 <br>
+
+
 
 
 
