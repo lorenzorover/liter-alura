@@ -12,9 +12,9 @@ public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer anoNascimento;
-    private Integer anoFaleciomento;
     private String nome;
+    private Integer anoNascimento;
+    private Integer anoFalecimento;
 
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Livro> livros = new ArrayList<>();
@@ -23,12 +23,20 @@ public class Autor {
 
     public Autor(JsonAutor jsonAutor) {
         this.anoNascimento = jsonAutor.anoNascimento();
-        this.anoFaleciomento = jsonAutor.anoFalecimento();
+        this.anoFalecimento = jsonAutor.anoFalecimento();
         this.nome = jsonAutor.nome();
     }
 
+    public Autor getAutorByLivro(JsonLivro jsonLivro) {
+        JsonAutor jsonAutor = jsonLivro.autores().get(0);
+        return new Autor(jsonAutor);
+    }
+
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
     public void setLivros(List<Livro> livros) {
-        livros.forEach(e -> e.setAutor(this));
         this.livros = livros;
     }
 
@@ -57,15 +65,11 @@ public class Autor {
     }
 
     public Integer getAnoFaleciomento() {
-        return anoFaleciomento;
+        return anoFalecimento;
     }
 
     public void setAnoFaleciomento(Integer anoFaleciomento) {
-        this.anoFaleciomento = anoFaleciomento;
-    }
-
-    public List<Livro> getLivros() {
-        return livros;
+        this.anoFalecimento = anoFaleciomento;
     }
 
     @Override
@@ -75,8 +79,9 @@ public class Autor {
                 .collect(Collectors.joining(", "));
         return
                 "nome='" + nome + '\'' +
-                ", livros=" + tituloLivros + '\'' +
-                ", anoFaleciomento=" + anoFaleciomento + '\'' +
-                ", anoNascimento=" + anoNascimento + '\'';
+                ", anoNascimento=" + anoNascimento + '\'' +
+                ", anoFaleciomento=" + anoFalecimento + '\'' +
+                ", livros=" + tituloLivros + '\'';
+
     }
 }

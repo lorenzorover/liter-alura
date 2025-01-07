@@ -1,23 +1,19 @@
 package com.alura.literalura.principal;
 
-import com.alura.literalura.entity.Autor;
-import com.alura.literalura.entity.Idioma;
-import com.alura.literalura.entity.JsonLivro;
-import com.alura.literalura.entity.Livro;
+import com.alura.literalura.entity.*;
 import com.alura.literalura.repository.AutorRepository;
 import com.alura.literalura.repository.LivroRepository;
 import com.alura.literalura.service.ConsumoApi;
 import com.alura.literalura.service.ConverteDados;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.*;
 
 public class Principal {
     private Scanner leitura = new Scanner(System.in);
-    private final String ENDERECO = "https://gutendex.com/books";
+    private static String ENDERECO = "https://gutendex.com/books/?search=";
     private ConsumoApi consumoApi = new ConsumoApi();
     private ConverteDados converteDados = new ConverteDados();
-    private List<JsonLivro> jsonLivros = new ArrayList<>();
+//    private List<JsonLivro> jsonLivros = new ArrayList<>();
 
     private LivroRepository livroRepository;
     private AutorRepository autorRepository;
@@ -25,7 +21,10 @@ public class Principal {
     private List<Livro> livros = new ArrayList<>();
     private List<Autor> autores = new ArrayList<>();
 
-
+    public Principal(LivroRepository livroRepository, AutorRepository autorRepository) {
+        this.livroRepository = livroRepository;
+        this.autorRepository = autorRepository;
+    }
 
     public void exibeMenu() {
         var opcao = -1;
@@ -38,42 +37,40 @@ public class Principal {
                     4 - Exibir a quantidade de livros em um determinado idioma
                     5 - Lista de autores por livros já buscados
                     6 - Listar autores vivos em determinado ano
-                                  
+                    
                     0 - Sair                                 
                     """;
-//            numero 3, 11 e 6 precisa de derived query no repository, por pelo menos 2 idiomas
 
             System.out.println(menu);
             opcao = leitura.nextInt();
             leitura.nextLine();
-        }
 
-        switch (opcao) {
-            case 1:
-                buscarLivroPorTitulo();
-                break;
-            case 2:
-                listarLivrosBuscados();
-                break;
-            case 3:
-                listarLivrosPorIdioma();
-                break;
-            case 4:
-                contarLivrosPorIdioma();
-                break;
-            case 5:
-                listarAutoresPorLivrosBuscados();
-                break;
-            case 6:
-                listarAutoresVivos();
-                break;
-            case 0:
-                System.out.println("Encerrando o programa!");
-                break;
-            default:
-                System.out.println("Opção inválida");
+            switch (opcao) {
+                case 1:
+                    buscarLivroPorTitulo();
+                    break;
+                case 2:
+                    listarLivrosBuscados();
+                    break;
+                case 3:
+                    listarLivrosPorIdioma();
+                    break;
+                case 4:
+                    contarLivrosPorIdioma();
+                    break;
+                case 5:
+                    listarAutoresPorLivrosBuscados();
+                    break;
+                case 6:
+                    listarAutoresVivos();
+                    break;
+                case 0:
+                    System.out.println("Encerrando o programa!");
+                    break;
+                default:
+                    System.out.println("Opção inválida");
+            }
         }
-
     }
 
     private void listarAutoresVivos() {
@@ -81,16 +78,15 @@ public class Principal {
         var anoEscolhido = leitura.nextInt();
         leitura.nextLine();
 
-        List<Autor> autoresVivos = autorRepository.findByYear(anoEscolhido);
+        autores = autorRepository.findByYear(anoEscolhido);
 
-        if (autoresVivos.isEmpty()) {
+        if (autores.isEmpty()) {
             System.out.println("Nenhum autor encontrado para o ano " + anoEscolhido + ".");
         } else {
             System.out.println("Autores vivos no ano " + anoEscolhido + ":");
-            autoresVivos.forEach(System.out::println);
+            autores.forEach(System.out::println);
         }
-
-        autoresVivos.forEach(System.out::println);
+        System.out.println();// pula linha
     }
 
     private void contarLivrosPorIdioma() {
@@ -101,16 +97,27 @@ public class Principal {
         Long livrosContados = livroRepository.countByIdioma(idioma);
 
         System.out.println("Quantidade de livros contados no idioma " + idiomaEscolhido + ": " + livrosContados);
+        System.out.println();// pula linha
     }
 
     private void listarLivrosPorIdioma() {
-        System.out.println("Deseja buscar livros de que idioma? ");
+        System.out.println("""
+                Deseja buscar livros de que idioma?
+                Opções:
+                Inglês
+                Português
+                """);
         var idiomaEscolhido = leitura.nextLine();
         Idioma idioma = Idioma.fromPortugues(idiomaEscolhido);
-        List<Livro> livrosPorIdioma = livroRepository.findByIdioma(idioma);
+        livros = livroRepository.findByIdioma(idioma);
 
-        System.out.println("Livros do idioma " + idiomaEscolhido);
-        livrosPorIdioma.forEach(System.out::println);
+        if (livros.isEmpty()) {
+            System.out.println("Nenhum livro encontrado no idioma " + idioma);
+        } else {
+            System.out.println("Livros do idioma " + idiomaEscolhido);
+            livros.forEach(System.out::println);
+        }
+        System.out.println();// pula linha
     }
 
     private void listarAutoresPorLivrosBuscados() {
@@ -118,6 +125,7 @@ public class Principal {
         autores.stream()
                 .sorted(Comparator.comparing(Autor::getNome))
                 .forEach(System.out::println);
+        System.out.println();// pula linha
     }
 
     private void listarLivrosBuscados() {
@@ -125,28 +133,39 @@ public class Principal {
         livros.stream()
                 .sorted(Comparator.comparing(Livro::getTitulo))
                 .forEach(System.out::println);
+        System.out.println();// pula linha
     }
 
     private void buscarLivroPorTitulo() {
-        JsonLivro jsonLivro = getDadosLivro();
+        JsonLivro jsonLivro = getJsonLivro();
         Livro livro = new Livro(jsonLivro);
 
-        Optional<Livro> livroExistente = livroRepository.findByTituloContainingIgnoreCase(livro.getTitulo());
+        // Busca o livro antes para ver se já existe algum igual, para não haver duplicidades
+        livroBusca = livroRepository.findByTituloContainingIgnoreCase(livro.getTitulo());
 
-        if (livroExistente.isPresent()) {
+        if (livroBusca.isPresent()) {
             System.out.println("O livro com o título '" + livro.getTitulo() + "' já está salvo no banco.");
         } else {
-            livroRepository.save(livro);
-            System.out.println("Livro '" + livro.getTitulo() + "' salvo com sucesso.");
+            try {
+                // Salvar livro e autor
+                autorRepository.save(livro.getAutor());
+                livroRepository.save(livro);
+                System.out.println("Livro '" + livro.getTitulo() + "' salvo com sucesso.");
+            } catch (Exception e) {
+                System.err.println("Erro ao salvar o livro: " + e.getMessage());
+            }
         }
 
         System.out.println(livro.toString());
+        System.out.println();// pula linha
     }
-    private JsonLivro getDadosLivro() {
+
+    private JsonLivro getJsonLivro() {
         System.out.println("Digite o título do livro: ");
         var nomeLivro = leitura.nextLine().toLowerCase();
-        var json = consumoApi.obterDados(ENDERECO + "?search=" + nomeLivro.replace(" ", "%20"));
-        JsonLivro jsonLivro = converteDados.obterDados(json, JsonLivro.class);
+        var json = consumoApi.obterDados(ENDERECO + nomeLivro.replace(" ", "%20").trim());
+        ConteinerJson jsonConvertido = converteDados.obterDados(json, ConteinerJson.class);
+        JsonLivro jsonLivro = jsonConvertido.resultados().get(0);
         return jsonLivro;
     }
 }

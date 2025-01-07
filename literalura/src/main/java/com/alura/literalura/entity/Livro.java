@@ -22,9 +22,18 @@ public class Livro {
 
     public Livro(JsonLivro jsonLivro) {
         this.titulo = jsonLivro.titulo();
-        this.idioma =Idioma.fromString(jsonLivro.getPrimeiroIdioma().split(",")[0].trim());
+        this.idioma = Idioma.fromString(confirmaIdioma(jsonLivro.idiomas()));
         this.downloads = jsonLivro.downloads();
         this.autor = jsonLivro.getPrimeiroAutor();
+    }
+
+    // Pega os idiomas e converte em apenas um, confirmando se possui algum idioma
+    private String confirmaIdioma(List<String> idiomas) {
+        if (idiomas == null || idiomas.isEmpty()) {
+            return "Desconhecido";
+        } else {
+            return idiomas.get(0);
+        }
     }
 
     public Long getId() {
@@ -48,7 +57,9 @@ public class Livro {
     }
 
     public void setAutor(Autor autor) {
-        this.autor = autor;
+        if (this.autor == null && autor != null) {
+            this.autor = autor;
+        }
     }
 
     public Idioma getIdioma() {
@@ -69,10 +80,10 @@ public class Livro {
 
     @Override
     public String toString() {
-        return
-                "titulo='" + titulo + '\'' +
-                ", autor=" + autor.getNome() + '\'' +
-                ", idioma=" + idioma + '\'' +
-                ", downloads=" + downloads + '\'';
+        return "titulo='" + titulo + '\'' +
+                ", autor=" + (autor != null ? autor.getNome() : "Desconhecido") +
+                ", idioma=" + idioma +
+                ", downloads=" + downloads;
     }
+
 }
