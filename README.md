@@ -28,7 +28,7 @@ Recomenda-se que o usuário preencha os dados corretamente para garantir o funci
 
 <br>
 
-## Estrutura do Projeto
+## 📂 Estrutura do Projeto
 
 <div> 
   <table>
